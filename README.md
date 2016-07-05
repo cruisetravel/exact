@@ -1,68 +1,213 @@
-Symfony Standard Edition
-========================
+Exact transformer
+=================
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony
-application that you can use as the skeleton for your new applications.
+Transforms exact xml to davinci csv
 
-For details on how to download and get started with Symfony, see the
-[Installation][1] chapter of the Symfony Documentation.
+Setup
+-----
 
-What's inside?
---------------
+Add virtual host:
+```
+<VirtualHost 127.0.0.1>
+  ServerName exact.dev
+  DocumentRoot "/path/to/application/root/web"
+  DirectoryIndex app.php
+  <Directory "/path/to/application/root/web">
+    AllowOverride All
+    Allow from All
+  </Directory>
+</VirtualHost>
+```
+Add host to your host file:
+```
+127.0.0.1 exact.dev
+```
+Make cache & log dirs writeable
+```
+sudo chmod -R 777 /path/to/application/root/app/cache
+sudo chmod -R 777 /path/to/application/root/app/logs
+```
+Install vendors
+```
+composer install
+```
 
-The Symfony Standard Edition is configured with the following defaults:
-
-  * An AppBundle you can use to start coding;
-
-  * Twig as the only configured template engine;
-
-  * Doctrine ORM/DBAL;
-
-  * Swiftmailer;
-
-  * Annotations enabled for everything.
-
-It comes pre-configured with the following bundles:
-
-  * **FrameworkBundle** - The core Symfony framework bundle
-
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
-
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
-
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
-
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
-
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
-
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
-
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
-
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
-
-  * [**SensioGeneratorBundle**][13] (in dev/test env) - Adds code generation
-    capabilities
-
-  * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
-    integration
-
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  https://symfony.com/doc/2.8/book/installation.html
-[6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  https://symfony.com/doc/2.8/book/doctrine.html
-[8]:  https://symfony.com/doc/2.8/book/templating.html
-[9]:  https://symfony.com/doc/2.8/book/security.html
-[10]: https://symfony.com/doc/2.8/cookbook/email.html
-[11]: https://symfony.com/doc/2.8/cookbook/logging/monolog.html
-[13]: https://symfony.com/doc/2.8/bundles/SensioGeneratorBundle/index.html
+Usage
+-----
+go to http://exact.dev/
+paste your xml in the form e.g.
+```xml
+<ExactFinancials>
+	<BankJournalEntries>
+		<BankJournalEntry admNr="621" finYr="2016" period="6" journalNr="20" seqnrAtrsh="360000001">
+			<Values>
+				<EntryNr>16200011</EntryNr>
+				<Descr>Test export XML bankboeking</Descr>
+			</Values>
+			<BankJournalEntryLines>
+				<BankJournalEntryLine seqnrAtrsh="1" linenrAtrss="1">
+					<Values>
+						<DateLine>2016-06-26</DateLine>
+						<DescrLine>Test export XML bankboeking</DescrLine>
+						<AccNr>1110</AccNr>
+						<DebtorLine>600</DebtorLine>
+						<OutstItemEntryNr>201570000004</OutstItemEntryNr>
+						<OutstItemCurrCode>EUR</OutstItemCurrCode>
+						<OutstItemExchRate>1</OutstItemExchRate>
+						<AmountFc>87</AmountFc>
+						<AmountDc>87</AmountDc>
+					</Values>
+				</BankJournalEntryLine>
+			</BankJournalEntryLines>
+		</BankJournalEntry>
+		<BankJournalEntry admNr="621" finYr="2016" period="6" journalNr="20" seqnrAtrsh="360000001">
+			<Values>
+				<EntryNr>16200011</EntryNr>
+				<Descr>Test export XML bankboeking</Descr>
+			</Values>
+			<BankJournalEntryLines>
+				<BankJournalEntryLine seqnrAtrsh="1" linenrAtrss="1">
+					<Values>
+						<DateLine>2016-06-26</DateLine>
+						<DescrLine>Test export XML bankboeking</DescrLine>
+						<AccNr>1300</AccNr>
+						<DebtorLine>600</DebtorLine>
+						<OutstItemEntryNr>201570000004</OutstItemEntryNr>
+						<OutstItemCurrCode>EUR</OutstItemCurrCode>
+						<OutstItemExchRate>1</OutstItemExchRate>
+						<AmountFc>-87</AmountFc>
+						<AmountDc>-87</AmountDc>
+					</Values>
+				</BankJournalEntryLine>
+			</BankJournalEntryLines>
+		</BankJournalEntry>
+		<BankJournalEntry admNr="621" finYr="2016" period="6" journalNr="20" seqnrAtrsh="360000001">
+			<Values>
+				<EntryNr>16200011</EntryNr>
+				<Descr>Test export XML bankboeking</Descr>
+			</Values>
+			<BankJournalEntryLines>
+				<BankJournalEntryLine seqnrAtrsh="1" linenrAtrss="2">
+					<Values>
+						<DateLine>2016-06-26</DateLine>
+						<DescrLine>Test export XML bankboeking</DescrLine>
+						<AccNr>1110</AccNr>
+						<DebtorLine>1020</DebtorLine>
+						<OutstItemEntryNr>14700003</OutstItemEntryNr>
+						<OutstItemCurrCode>EUR</OutstItemCurrCode>
+						<OutstItemExchRate>1</OutstItemExchRate>
+						<AmountFc>1200</AmountFc>
+						<AmountDc>1200</AmountDc>
+					</Values>
+				</BankJournalEntryLine>
+			</BankJournalEntryLines>
+		</BankJournalEntry>
+		<BankJournalEntry admNr="621" finYr="2016" period="6" journalNr="20" seqnrAtrsh="360000001">
+			<Values>
+				<EntryNr>16200011</EntryNr>
+				<Descr>Test export XML bankboeking</Descr>
+			</Values>
+			<BankJournalEntryLines>
+				<BankJournalEntryLine seqnrAtrsh="1" linenrAtrss="2">
+					<Values>
+						<DateLine>2016-06-26</DateLine>
+						<DescrLine>Test export XML bankboeking</DescrLine>
+						<AccNr>1300</AccNr>
+						<DebtorLine>1020</DebtorLine>
+						<OutstItemEntryNr>14700003</OutstItemEntryNr>
+						<OutstItemCurrCode>EUR</OutstItemCurrCode>
+						<OutstItemExchRate>1</OutstItemExchRate>
+						<AmountFc>-1200</AmountFc>
+						<AmountDc>-1200</AmountDc>
+					</Values>
+				</BankJournalEntryLine>
+			</BankJournalEntryLines>
+		</BankJournalEntry>
+		<BankJournalEntry admNr="621" finYr="2016" period="6" journalNr="20" seqnrAtrsh="360000001">
+			<Values>
+				<EntryNr>16200011</EntryNr>
+				<Descr>Test export XML bankboeking</Descr>
+			</Values>
+			<BankJournalEntryLines>
+				<BankJournalEntryLine seqnrAtrsh="1" linenrAtrss="3">
+					<Values>
+						<DateLine>2016-06-26</DateLine>
+						<DescrLine>Test export XML bankboeking</DescrLine>
+						<AccNr>1110</AccNr>
+						<DebtorLine>1040</DebtorLine>
+						<OutstItemEntryNr>901026</OutstItemEntryNr>
+						<OutstItemCurrCode>EUR</OutstItemCurrCode>
+						<OutstItemExchRate>1</OutstItemExchRate>
+						<AmountFc>4581.46</AmountFc>
+						<AmountDc>4581.46</AmountDc>
+					</Values>
+				</BankJournalEntryLine>
+			</BankJournalEntryLines>
+		</BankJournalEntry>
+		<BankJournalEntry admNr="621" finYr="2016" period="6" journalNr="20" seqnrAtrsh="360000001">
+			<Values>
+				<EntryNr>16200011</EntryNr>
+				<Descr>Test export XML bankboeking</Descr>
+			</Values>
+			<BankJournalEntryLines>
+				<BankJournalEntryLine seqnrAtrsh="1" linenrAtrss="3">
+					<Values>
+						<DateLine>2016-06-26</DateLine>
+						<DescrLine>Test export XML bankboeking</DescrLine>
+						<AccNr>1300</AccNr>
+						<DebtorLine>1040</DebtorLine>
+						<OutstItemEntryNr>901026</OutstItemEntryNr>
+						<OutstItemCurrCode>EUR</OutstItemCurrCode>
+						<OutstItemExchRate>1</OutstItemExchRate>
+						<AmountFc>-4581.46</AmountFc>
+						<AmountDc>-4581.46</AmountDc>
+					</Values>
+				</BankJournalEntryLine>
+			</BankJournalEntryLines>
+		</BankJournalEntry>
+		<BankJournalEntry admNr="621" finYr="2016" period="6" journalNr="20" seqnrAtrsh="360000001">
+			<Values>
+				<EntryNr>16200011</EntryNr>
+				<Descr>Test export XML bankboeking</Descr>
+			</Values>
+			<BankJournalEntryLines>
+				<BankJournalEntryLine seqnrAtrsh="1" linenrAtrss="4">
+					<Values>
+						<DateLine>2016-06-26</DateLine>
+						<DescrLine>Test export XML bankboeking</DescrLine>
+						<AccNr>1110</AccNr>
+						<DebtorLine>1040</DebtorLine>
+						<OutstItemEntryNr>34000002</OutstItemEntryNr>
+						<OutstItemCurrCode>EUR</OutstItemCurrCode>
+						<OutstItemExchRate>1</OutstItemExchRate>
+						<AmountFc>-150</AmountFc>
+						<AmountDc>-150</AmountDc>
+					</Values>
+				</BankJournalEntryLine>
+			</BankJournalEntryLines>
+		</BankJournalEntry>
+		<BankJournalEntry admNr="621" finYr="2016" period="6" journalNr="20" seqnrAtrsh="360000001">
+			<Values>
+				<EntryNr>16200011</EntryNr>
+				<Descr>Test export XML bankboeking</Descr>
+			</Values>
+			<BankJournalEntryLines>
+				<BankJournalEntryLine seqnrAtrsh="1" linenrAtrss="4">
+					<Values>
+						<DateLine>2016-06-26</DateLine>
+						<DescrLine>Test export XML bankboeking</DescrLine>
+						<AccNr>1300</AccNr>
+						<DebtorLine>1040</DebtorLine>
+						<OutstItemEntryNr>34000002</OutstItemEntryNr>
+						<OutstItemCurrCode>EUR</OutstItemCurrCode>
+						<OutstItemExchRate>1</OutstItemExchRate>
+						<AmountFc>150</AmountFc>
+						<AmountDc>150</AmountDc>
+					</Values>
+				</BankJournalEntryLine>
+			</BankJournalEntryLines>
+		</BankJournalEntry>
+	</BankJournalEntries>
+</ExactFinancials>
+```
+click submit and save the resulting csv file
