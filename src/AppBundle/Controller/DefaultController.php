@@ -28,7 +28,7 @@ class DefaultController extends Controller
                 Response::HTTP_OK,
                 array(
                     'Content-type' => 'text/csv',
-                    'Content-disposition' => 'attachment;filename=davinci.csv',
+                    'Content-disposition' => 'attachment;filename=ExactPostingSteps.csv',
                 )
             );
         }
