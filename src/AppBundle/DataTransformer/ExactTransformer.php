@@ -77,7 +77,8 @@ class ExactTransformer
     public function transform($xml)
     {
         $crawler = new Crawler($xml);
-
+	$this->invalid = array();
+	
         //$this->csv[] =  '"'. implode('","', $this->columns) . '"';
 
         $crawler->filter('BankJournalEntry')->each(function (Crawler $node, $i) {
@@ -94,6 +95,17 @@ class ExactTransformer
             } elseif (!empty($payRef = $values->filter('OutstItemEntryNr')->count())) {
                 $reservationNumber = $values->filter('OutstItemEntryNr')->text();
                 $payment = ((float) $values->filter('AmountDc')->text() * -1);
+
+		/*  
+                *   DV reservationnumber should be 6 digits, if longer or shorter, DV import will fail.
+                *   Collect details and inform finance department so payment can be entered manually.
+                */
+
+                if (strlen($reservationNumber) !== 6) {
+                    $this->invalid[] = "Boekstuknummer: ".$reservationNumber. ", bedrag: ". $payment." debiteur: ".$values->filter('DebtorLine')->text();
+                    $reservationNumber = "";
+                    $payment = "0.00";
+                }
             } else {
                 $reservationNumber = "";
                 $payment = "0.00";
@@ -148,6 +160,24 @@ class ExactTransformer
             $this->csv[] = '"'. implode('","', $this->values[$k]) . '"';
         });
 
-        return implode("\r\n", $this->csv);
+
+
+       if (sizeOf($this->invalid) >= 1) {
+
+            $to      = 'debiteuren@pharosreizen.nl;bram.bos@anwbreizen.nl;eblom@anwb.nl';
+            $subject = 'Foutieve reserveringsnummers in DV import bestand';
+
+            foreach ($this->invalid as $key=>$value) {
+                $message .= $value."\r\n";
+            }
+
+            $headers = 'From: conversie@anwbreizen.nl' . "\r\n" .
+            'Bcc: bram@freshtag.nl' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
+
+	    mail($to, $subject, $message, $headers);
+        }  
+	
+	return implode("\r\n", $this->csv);
     }
 }
