@@ -41,9 +41,9 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/pinhigh", name="pinhigh")
+     * @Route("/anwbgolf", name="anwbgolf")
      */
-    public function pinhighAction(Request $request)
+    public function anwbgolfAction(Request $request)
     {
         $form = $this->createForm('AppBundle\Form\Type\ExactAnwbGolfType');
         
